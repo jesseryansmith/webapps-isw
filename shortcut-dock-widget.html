@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Shortcut Dock Widget</title>
+    <link rel="stylesheet" href="shortcut-dock-widget.css">
+</head>
+<body>
+    <!-- 
+    iOS-Inspired Dock Widget for Shortcut Management
+    
+    Usage Instructions:
+    1. Include this HTML file in your project
+    2. Include the accompanying CSS and TypeScript files
+    3. The widget will automatically initialize when the page loads
+    4. Customize shortcut categories and data in the TypeScript file
+    
+    Features:
+    - Filter Shortcuts: Green icon opens category filter modal
+    - Siri Commands: Blue icon shows Siri command when shortcut is flipped
+    - Share Shortcuts: Purple icon enables sharing when shortcut is flipped  
+    - Shuffle Suggestions: Red icon loads new random shortcuts
+    
+    Accessibility:
+    - Full keyboard navigation support
+    - ARIA labels and roles
+    - Screen reader compatible
+    - Focus management for modals
+    -->
+    
+    <div class="shortcut-dock-container">
+        <!-- Shortcut Cards Grid -->
+        <div class="shortcuts-grid" id="shortcutsGrid">
+            <!-- Shortcut cards will be dynamically generated here -->
+        </div>
+        
+        <!-- iOS-Style Dock -->
+        <div class="dock-widget">
+            <div class="dock-background">
+                <!-- Filter Shortcuts Button (Green) -->
+                <button class="dock-button filter-button" 
+                        id="filterButton"
+                        aria-label="Filter shortcuts by category"
+                        title="Filter Shortcuts">
+                    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 7H21L15 13V19L9 17V13L3 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                
+                <!-- Siri Command Button (Blue) -->
+                <button class="dock-button siri-button" 
+                        id="siriButton"
+                        aria-label="Generate Siri command for selected shortcut"
+                        title="Siri Command"
+                        disabled>
+                    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="6" r="2" fill="currentColor"/>
+                    </svg>
+                </button>
+                
+                <!-- Share Shortcut Button (Purple) -->
+                <button class="dock-button share-button" 
+                        id="shareButton"
+                        aria-label="Share selected shortcut"
+                        title="Share Shortcut"
+                        disabled>
+                    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="16,6 12,2 8,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="12" y1="2" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <!-- Shuffle Suggestions Button (Red) -->
+                <button class="dock-button shuffle-button" 
+                        id="shuffleButton"
+                        aria-label="Load new random shortcut suggestions"
+                        title="Shuffle Suggestions">
+                    <svg class="dock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polyline points="16,3 21,3 21,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 20L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="21,16 21,21 16,21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 15L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 4L9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filter Modal -->
+    <div class="modal-overlay" id="filterModal" role="dialog" aria-labelledby="filterModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="filterModalTitle">Filter Shortcuts</h2>
+                <button class="modal-close" id="filterModalClose" aria-label="Close filter modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="categorySelect">Select Category:</label>
+                <select id="categorySelect" class="category-select">
+                    <option value="">All Categories</option>
+                    <option value="productivity">Productivity</option>
+                    <option value="automation">Automation</option>
+                    <option value="social">Social</option>
+                    <option value="utility">Utility</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="health">Health & Fitness</option>
+                </select>
+                <button id="applyFilter" class="apply-button">Apply Filter</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Siri Command Modal -->
+    <div class="modal-overlay" id="siriModal" role="dialog" aria-labelledby="siriModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="siriModalTitle">Siri Command</h2>
+                <button class="modal-close" id="siriModalClose" aria-label="Close Siri command modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Use this phrase to trigger your shortcut with Siri:</p>
+                <div class="siri-command-container">
+                    <div class="siri-command" id="siriCommandText">
+                        "Hey Siri, [shortcut name]"
+                    </div>
+                    <button id="copySiriCommand" class="copy-button" aria-label="Copy Siri command to clipboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Share Modal -->
+    <div class="modal-overlay" id="shareModal" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="shareModalTitle">Share Shortcut</h2>
+                <button class="modal-close" id="shareModalClose" aria-label="Close share modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="shareContent" class="share-content">
+                    <!-- Share content will be dynamically generated -->
+                </div>
+                <div class="share-buttons">
+                    <button id="nativeShare" class="share-button native-share" style="display: none;">
+                        Share
+                    </button>
+                    <button id="copyShare" class="share-button copy-share">
+                        Copy to Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+        <span id="toastMessage"></span>
+    </div>
+    
+    <script src="shortcut-dock-widget.js"></script>
+</body>
+</html>
