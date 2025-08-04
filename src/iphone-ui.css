@@ -104,7 +104,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 20px 0;
+  padding: 8px 20px 0 30px;
   background: transparent;
   font-size: 17px;
   font-weight: 600;
@@ -128,24 +128,31 @@ body {
 .branding {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-height: 100px;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  min-height: 60px;
+  padding: 0 5px 3px;
+  filter: brightness(1.5);
+  position: relative;
+  z-index: 2;
 }
 
 .branding img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0 40px 0 40px;
-  margin-top: -10;
   width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: contain;
+  padding: 0;
+  margin-top: -10px;
+  width: 90vw;
 }
 
 /* Search Field - iOS Style */
 .search-container {
   display: flex;
   justify-content: center;
-  margin: 20px 24px 30px;
+  margin: 30px 24px 25px;
   position: relative;
   z-index: 10;
 }
@@ -346,7 +353,7 @@ body {
   align-items: center;
   flex: 1;
   max-height: 380px;
-  margin-top: 30px;
+  margin-top: 0;
   margin-bottom: 20px;
   padding: 8px;
   position: relative;
@@ -424,7 +431,7 @@ body {
 .dock-area {
   position: relative;
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   justify-content: center;
   z-index: 2;
 }
@@ -452,7 +459,7 @@ body {
 }
 
 .app-icon-dock {
-    margin-bottom: 0;
+    margin-bottom: 50;
 }
 /* Dock Icon Variants - Matching Figma iOS Apps */
 .app-icon.blue-dock {

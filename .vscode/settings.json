@@ -18,5 +18,97 @@
     "**/.git/subtree-cache/**": true,
     "**/dist/**": true,
     "**/.vite/**": true
-  }
+  },
+
+  // ===== DISABLE ANNOYING FEATURES =====
+
+  // Turn off all inline suggestions and auto-completions
+  "editor.inlineSuggest.enabled": false,
+  "editor.quickSuggestions": {
+    "other": false,
+    "comments": false,
+    "strings": false
+  },
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.tabCompletion": "off",
+  "editor.wordBasedSuggestions": "off",
+  "editor.parameterHints.enabled": false,
+
+  // Turn off hover popups and reference containers
+  "editor.hover.enabled": false,
+  "editor.hover.delay": 10000,
+  "editor.hover.sticky": false,
+
+  // Disable auto-edits and automatic formatting
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "editor.autoIndent": "none",
+  "editor.autoClosingBrackets": "never",
+  "editor.autoClosingQuotes": "never",
+  "editor.autoSurround": "never",
+
+  // Disable GitHub Copilot suggestions (if installed)
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "yaml": false,
+    "json": false,
+    "javascript": false,
+    "typescript": false,
+    "html": false,
+    "css": false
+  },
+  "github.copilot.inlineSuggest.enable": false,
+
+  // Disable IntelliSense and code lens
+  "editor.codeLens": false,
+  "typescript.suggest.enabled": false,
+  "javascript.suggest.enabled": false,
+  "html.suggest.html5": false,
+  "css.suggest.insertMode": "replace",
+  "emmet.showSuggestionsAsSnippets": false,
+
+  // Turn off lightbulb (quick fix suggestions)
+  "editor.lightbulb.enabled": "off",
+
+  // Disable snippet suggestions
+  "editor.snippetSuggestions": "none",
+
+  // ===== MATERIAL ICON THEME CUSTOM ICONS =====
+  // Create unique icons for each documentation file
+  "material-icon-theme.files.customClones": [
+    {
+      "name": "readme-master",
+      "base": "markdown",
+      "color": "blue-600",
+      "lightColor": "blue-700",
+      "fileNames": ["README.md", "readme.md"]
+    },
+    {
+      "name": "diary-sessions",
+      "base": "markdown",
+      "color": "green-500",
+      "lightColor": "green-600",
+      "fileNames": ["MYDIARY.md", "mydiary.md"]
+    },
+    {
+      "name": "pearls-cheatsheet",
+      "base": "markdown",
+      "color": "yellow-600",
+      "lightColor": "yellow-700",
+      "fileNames": ["MYPEARLS.md", "mypearls.md"]
+    },
+    {
+      "name": "tree-structure",
+      "base": "markdown",
+      "color": "purple-500",
+      "lightColor": "purple-600",
+      "fileNames": ["MYTREE.md", "mytree.md"]
+    }
+  ]
 }
