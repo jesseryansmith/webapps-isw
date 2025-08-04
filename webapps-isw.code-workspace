@@ -1,0 +1,34 @@
+{
+  "folders": [
+    {
+      "name": "iOS Shortcut Wizard",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "git.defaultBranchName": "master",
+    "git.autofetch": true,
+    "git.autofetchPeriod": 180,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "git.suggestSmartCommit": true,
+    "git.postCommitCommand": "sync",
+    "scm.defaultViewMode": "tree",
+    "scm.alwaysShowRepositories": true,
+    "git.showProgress": true,
+    "git.fetchOnPull": true,
+    "git.pruneOnFetch": true,
+    "explorer.excludeGitIgnore": true,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "javascript.preferences.importModuleSpecifier": "relative"
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-json",
+      "esbenp.prettier-vscode",
+      "ms-vscode.live-server"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "git.defaultBranchName": "master",
+  "git.autofetch": true,
+  "git.autofetchPeriod": 180,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.suggestSmartCommit": true,
+  "git.postCommitCommand": "sync",
+  "scm.defaultViewMode": "tree",
+  "scm.alwaysShowRepositories": true,
+  "git.showProgress": true,
+  "git.fetchOnPull": true,
+  "git.pruneOnFetch": true,
+  "explorer.excludeGitIgnore": true,
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/dist/**": true,
+    "**/.vite/**": true
+  }
+}
