@@ -1,58 +1,146 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iPhone Shortcuts Helper</title>
-  <link rel="stylesheet" href="index.css">
-  <script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^0.12.0",
-    "react": "https://esm.sh/react@^19.0.0",
-    "react-dom/client": "https://esm.sh/react-dom@^19.0.0/client",
-    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
-    "react/": "https://esm.sh/react@^19.1.1/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
-<body>
-  <main class="container">
-    <div class="iphone-frame">
-      <!-- Physical Buttons -->
-      <div class="ringer-switch"></div>
-      <div class="volume-buttons"></div>
-      <div class="side-button"></div>
-      <div class="notch"></div>
-      <div class="screen">
-        <div class="status-bar">
-          <span class="time">9:41</span>
-          <div class="status-icons">
-            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M4.32,20.8,12,3.2,19.68,20.8H4.32M12,0,1,22H23Z"/></svg>
-            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12,4.5C7,4.5,2.7,6.3,0,9.3L12,21.5,24,9.3C21.3,6.3,17,4.5,12,4.5Z"/></svg>
-            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M20,10V8.3C20,7.6,19.4,7,18.7,7H3.3C2.6,7,2,7.6,2,8.3V15.7C2,16.4,2.6,17,3.3,17H18.7C19.4,17,20,16.4,20,15.7V14H22V10H20Z"/></svg>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Custom iOS Shortcut Wizard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- iPhone Container -->
+    <div class="device-container">
+      <div class="iphone-frame">
+        <!-- Dynamic Island / Notch -->
+        <div class="dynamic-island"></div>
+
+        <!-- Screen Content -->
+        <div class="screen-content">
+          <div id="app">
+            <!-- Status Bar -->
+            <div class="status-bar">
+              <div class="status-left">
+                <span class="time">9:41</span>
+              </div>
+              <div class="status-right">
+                <div class="signal-bars">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+                <div class="wifi-icon">📶</div>
+                <div class="battery">
+                  <div class="battery-level"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main App Content -->
+            <div class="app-container">
+              <!-- Navigation Header -->
+              <div class="nav-header">
+                <div class="nav-title">Shortcuts</div>
+                <div class="nav-actions">
+                  <button class="nav-button">Edit</button>
+                  <button class="nav-button primary">+</button>
+                </div>
+              </div>
+
+              <!-- Search Bar -->
+              <div class="search-container">
+                <div class="search-bar">
+                  <div class="search-icon">🔍</div>
+                  <input type="text" placeholder="Search shortcuts" class="search-input">
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
+              <div class="quick-actions">
+                <div class="quick-action">
+                  <div class="quick-icon">⚡</div>
+                  <span>Create</span>
+                </div>
+                <div class="quick-action">
+                  <div class="quick-icon">📱</div>
+                  <span>My Shortcuts</span>
+                </div>
+                <div class="quick-action">
+                  <div class="quick-icon">🎨</div>
+                  <span>Customize</span>
+                </div>
+                <div class="quick-action">
+                  <div class="quick-icon">⚙️</div>
+                  <span>Settings</span>
+                </div>
+              </div>
+
+              <!-- Content Area -->
+              <div class="content-area">
+                <div class="section-header">
+                  <h2>My Shortcuts</h2>
+                  <span class="see-all">See All</span>
+                </div>
+
+                <div class="shortcuts-grid">
+                  <div class="shortcut-card">
+                    <div class="shortcut-icon">📸</div>
+                    <div class="shortcut-info">
+                      <h3>Screenshot</h3>
+                      <p>Take and save screenshot</p>
+                    </div>
+                  </div>
+
+                  <div class="shortcut-card">
+                    <div class="shortcut-icon">🎵</div>
+                    <div class="shortcut-info">
+                      <h3>Play Music</h3>
+                      <p>Start your favorite playlist</p>
+                    </div>
+                  </div>
+
+                  <div class="shortcut-card">
+                    <div class="shortcut-icon">📍</div>
+                    <div class="shortcut-info">
+                      <h3>Get Directions</h3>
+                      <p>Navigate to saved location</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Bar -->
+              <div class="tab-bar">
+                <div class="tab-item active">
+                  <div class="tab-icon">🏠</div>
+                  <span>Home</span>
+                </div>
+                <div class="tab-item">
+                  <div class="tab-icon">📚</div>
+                  <span>Library</span>
+                </div>
+                <div class="tab-item">
+                  <div class="tab-icon">🔍</div>
+                  <span>Search</span>
+                </div>
+                <div class="tab-item">
+                  <div class="tab-icon">⚙️</div>
+                  <span>Settings</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="root">
-          <!-- React App Renders Here -->
-        </div>
-        <div class="dock-container">
-            <div class="dock">
-                <div class="dock-app phone"></div>
-                <div class="dock-app safari"></div>
-                <div class="dock-app messages"></div>
-                <div class="dock-app music"></div>
-            </div>
-        </div>
-        <div class="home-bar-container">
-            <div class="home-bar"></div>
-        </div>
+
+        <!-- Home Indicator -->
+        <div class="home-indicator"></div>
       </div>
     </div>
-  </main>
-  <script type="module" src="index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>

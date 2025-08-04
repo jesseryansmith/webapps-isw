@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Custom iOS Shortcut Wizard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- iPhone Container -->
+    <div class="device-container">
+      <div class="iphone-frame">
+        <!-- Dynamic Island / Notch -->
+        <div class="dynamic-island"></div>
+
+        <!-- Screen Content -->
+        <div class="screen-content">
+          <div id="app">
+            <!-- Main App Content -->
+            <div class="app-container">
+              <!-- Status Bar -->
+              <div class="status-bar">
+                <div class="status-left">
+                  <span class="time">9:41</span>
+                </div>
+                <div class="status-right">
+                  <div class="signal-bars">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                  </div>
+                  <div class="wifi-icon"><span class="material-icons">wifi</span></div>
+                  <div class="battery">
+                    <div class="battery-level"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- iOS Home Screen Style -->
+              <div class="ios-home-screen">
+<div class="branding"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/logo-standard_BoX_1024x512.png"></div>
+                <!-- App Icons Grid (2x3 Widget Style Layout) -->
+                <div class="app-icons-grid">
+                  <!-- Row 1 -->
+                  <div class="app-icon blue" data-shortcut="camera">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">photo_camera</div></span></div>
+                  </div>
+                  <div class="app-icon pink" data-shortcut="music">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">music_note</div></span></div>
+                  </div>
+
+                  <!-- Row 2 -->
+                  <div class="app-icon yellow" data-shortcut="notes">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">edit_note</div></span></div>
+                  </div>
+                  <div class="app-icon green" data-shortcut="maps">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">map</div></span></div>
+                  </div>
+
+                  <!-- Row 3 -->
+                  <div class="app-icon orange" data-shortcut="weather">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">sunny</div></span></div>
+                  </div>
+                  <div class="app-icon purple" data-shortcut="timer">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">alarm</div></span></div>
+                  </div>
+                </div>
+
+                <!-- Search Field Container -->
+                <div class="search-container">
+                  <div data-layer="Search Field" class="SearchField">
+                    <div data-layer="Search" class="Search">
+                      <div class="Search-icon_container"><span class="material-icons">search</span></div>
+                      <div class="Search-text_container">Search</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Dock Area (bottom row like in Figma) -->
+                <div class="dock-area">
+                  <div class="dock-background">
+ </div>                   <div class="dock-icons">
+                      <div class="app-icon-dock purple-dock" data-shortcut="transmit">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/shortcuts_app.png" alt="Shuffle" height="64px" width="64px"></a></div>
+                      </div>
+                      <div class="app-icon-dock orange-dock" data-shortcut="books">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/books_app.png" alt="Catalog" height="64px" width="64px"></a></div>
+                      </div>
+                      <div class="app-icon-dock blue-dock" data-shortcut="mail">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/mail_app.png" alt="Send" height="64px" width="64px"></a></div>
+                      </div>
+                      <div class="app-icon-dock red-dock" data-shortcut="music">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/music_app.png" alt="Music" height="64px" width="64px"></a></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+        <!-- Home Indicator -->
+        <div class="home-indicator"></div>
+      </div>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,269 @@
+/* Figma Design Tokens & Assets */
+
+:root {
+  /* Figma Colors - Update these with your actual design colors */
+  --figma-primary: #007AFF;
+  --figma-secondary: #5AC8FA;
+  --figma-accent: #FF9500;
+  --figma-success: #30D158;
+  --figma-warning: #FF9F0A;
+  --figma-error: #FF3B30;
+
+  /* iOS Shortcuts App Specific Colors */
+  --figma-shortcut-blue: #007AFF;
+  --figma-shortcut-purple: #5856D6;
+  --figma-shortcut-pink: #FF2D92;
+  --figma-shortcut-orange: #FF9500;
+  --figma-shortcut-green: #30D158;
+  --figma-shortcut-red: #FF3B30;
+  --figma-shortcut-gray: #8E8E93;
+
+  /* Background Colors */
+  --figma-bg-primary: #F2F2F7;
+  --figma-bg-secondary: #FFFFFF;
+  --figma-bg-tertiary: #F8F8F8;
+  --figma-bg-card: #FFFFFF;
+
+  /* Figma Typography - Update with your design fonts */
+  --figma-font-primary: 'SF Pro Display', -apple-system, sans-serif;
+  --figma-font-secondary: 'SF Pro Text', -apple-system, sans-serif;
+
+  /* Figma Spacing - Update with your design spacing scale */
+  --figma-space-xs: 4px;
+  --figma-space-sm: 8px;
+  --figma-space-md: 16px;
+  --figma-space-lg: 24px;
+  --figma-space-xl: 32px;
+
+  /* Figma Shadows - Update with your design shadows */
+  --figma-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --figma-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --figma-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+  /* Figma Border Radius - Update with your design radius scale */
+  --figma-radius-xs: 4px;
+  --figma-radius-sm: 8px;
+  --figma-radius-md: 12px;
+  --figma-radius-lg: 16px;
+  --figma-radius-xl: 24px;
+}
+
+/* Asset Utilities */
+.figma-asset {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.figma-icon {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.figma-icon-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.figma-icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.figma-icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.figma-icon-xl {
+  width: 48px;
+  height: 48px;
+}
+
+/* Common Figma Asset Classes */
+.figma-logo {
+  background-image: url('/images/logo.svg');
+}
+
+.figma-icon-home {
+  background-image: url('/images/icon-home.svg');
+}
+
+.figma-icon-search {
+  background-image: url('/images/icon-search.svg');
+}
+
+.figma-icon-settings {
+  background-image: url('/images/icon-settings.svg');
+}
+
+.figma-icon-add {
+  background-image: url('/images/icon-add.svg');
+}
+
+/* Figma Component Styles */
+.figma-button {
+  padding: var(--figma-space-md) var(--figma-space-lg);
+  border-radius: var(--figma-radius-md);
+  font-family: var(--figma-font-primary);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.figma-button-primary {
+  background: var(--figma-primary);
+  color: white;
+}
+
+.figma-button-secondary {
+  background: var(--figma-secondary);
+  color: white;
+}
+
+.figma-card {
+  background: var(--figma-bg-card);
+  border-radius: var(--figma-radius-lg);
+  box-shadow: var(--figma-shadow-md);
+  padding: var(--figma-space-lg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.figma-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--figma-shadow-lg);
+}
+
+/* Shortcut-Specific Figma Components */
+.figma-shortcut-card {
+  background: var(--figma-bg-card);
+  border-radius: var(--figma-radius-lg);
+  box-shadow: var(--figma-shadow-sm);
+  padding: var(--figma-space-md);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.figma-shortcut-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--figma-shadow-md);
+}
+
+.figma-shortcut-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: linear-gradient(135deg, var(--figma-shortcut-blue), var(--figma-shortcut-purple));
+}
+
+.figma-shortcut-icon.blue {
+  background: linear-gradient(135deg, var(--figma-shortcut-blue), #5AC8FA);
+}
+
+.figma-shortcut-icon.purple {
+  background: linear-gradient(135deg, var(--figma-shortcut-purple), #AF52DE);
+}
+
+.figma-shortcut-icon.pink {
+  background: linear-gradient(135deg, var(--figma-shortcut-pink), #FF6482);
+}
+
+.figma-shortcut-icon.orange {
+  background: linear-gradient(135deg, var(--figma-shortcut-orange), #FFCC02);
+}
+
+.figma-shortcut-icon.green {
+  background: linear-gradient(135deg, var(--figma-shortcut-green), #32D74B);
+}
+
+.figma-shortcut-icon.red {
+  background: linear-gradient(135deg, var(--figma-shortcut-red), #FF6961);
+}
+
+/* Navigation Header Figma Styles */
+.figma-nav-header {
+  background: var(--figma-bg-primary);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  padding: var(--figma-space-sm) var(--figma-space-lg) var(--figma-space-md);
+}
+
+.figma-nav-title {
+  font-family: var(--figma-font-primary);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--ios-label);
+  letter-spacing: -0.4px;
+}
+
+/* Search Bar Figma Styles */
+.figma-search-bar {
+  background: rgba(142, 142, 147, 0.12);
+  border-radius: var(--figma-radius-sm);
+  padding: var(--figma-space-sm) var(--figma-space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--figma-space-sm);
+  transition: background-color 0.2s ease;
+}
+
+.figma-search-bar:focus-within {
+  background: rgba(0, 122, 255, 0.1);
+}
+
+/* Quick Actions Figma Styles */
+.figma-quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+  gap: var(--figma-space-sm);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: var(--figma-space-xs);
+  border-radius: var(--figma-radius-md);
+}
+
+.figma-quick-action:hover {
+  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.figma-quick-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: var(--figma-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: background-color 0.2s ease;
+}
+
+.figma-quick-action:hover .figma-quick-icon {
+  background: rgba(0, 122, 255, 0.15);
+}
+
+/* Responsive Figma Assets */
+@media (max-width: 480px) {
+  .figma-icon-responsive {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .figma-icon-responsive {
+    width: 28px;
+    height: 28px;
+  }
+}
