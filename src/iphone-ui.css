@@ -92,7 +92,7 @@ body {
 .screen-content {
   width: 100%;
   height: 100%;
-  background: var(--ios-background);
+  background: transparent;
   border-radius: calc(var(--device-border-radius) - var(--screen-padding));
   overflow: hidden;
   position: relative;
@@ -104,7 +104,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 20px 0 30px;
+  padding: 8px 20px 0 35px;
   background: transparent;
   font-size: 17px;
   font-weight: 600;
@@ -123,6 +123,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-right: 5px;
 }
 
 .branding {
@@ -132,7 +133,7 @@ body {
   justify-content: center;
   max-width: 100%;
   min-height: 60px;
-  padding: 0 5px 3px;
+  padding: 10px 0 3px;
   filter: brightness(1.5);
   position: relative;
   z-index: 2;
@@ -140,19 +141,19 @@ body {
 
 .branding img {
   width: 100%;
-  max-width: 280px;
+  max-width: 350px;
   height: auto;
   object-fit: contain;
   padding: 0;
   margin-top: -10px;
-  width: 90vw;
+  width: 95vw;
 }
 
 /* Search Field - iOS Style */
 .search-container {
   display: flex;
   justify-content: center;
-  margin: 30px 24px 25px;
+  margin: 0 24px 25px;
   position: relative;
   z-index: 10;
 }
@@ -165,8 +166,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 85px;
-  margin-bottom: -15px;
+  margin-top: 15px;
+  margin-bottom: -5px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
@@ -203,7 +204,7 @@ body {
 
 /* Signal Bars */
 .signal-bars {
-  color: rgb(48, 45, 45);
+  color: #000000;
   border-color: rgb(48, 45, 45);
   display: flex;
   align-items: flex-end;
@@ -213,15 +214,16 @@ body {
 
 .signal-bars .bar {
   width: 3px;
-  background: rgb(59, 56, 56);
+  background: #302D2D;
   border-radius: 1px;
   border-color: rgb(82, 78, 78);
+  animation: signalPulse 4s ease-in-out infinite;
 }
 
-.signal-bars .bar:nth-child(1) {color: rgb(48, 45, 45); height: 4px; }
-.signal-bars .bar:nth-child(2) { height: 7px; }
-.signal-bars .bar:nth-child(3) { height: 10px; }
-.signal-bars .bar:nth-child(4) { height: 13px; }
+.signal-bars .bar:nth-child(1) {color: rgb(82, 78, 78); height: 4px; animation-delay: 0s; }
+.signal-bars .bar:nth-child(2) { height: 7px; animation-delay: 0.5s; }
+.signal-bars .bar:nth-child(3) { height: 10px; animation-delay: 1s; }
+.signal-bars .bar:nth-child(4) { height: 13px; animation-delay: 1.5s; }
 
 /* WiFi Icon */
 .wifi-icon {
@@ -233,7 +235,7 @@ body {
 .battery {
   width: 25px;
   height: 12px;
-  border: 1px solid rgb(48, 45, 45);
+  border: 1px solid #302D2D;
   border-radius: 2px;
   position: relative;
 }
@@ -245,7 +247,7 @@ body {
   top: 3px;
   width: 2px;
   height: 6px;
-  background: var(--ios-label);
+  background: #302D2D;
   border-radius: 0 1px 1px 0;
 }
 
@@ -255,7 +257,7 @@ body {
   top: 1px;
   width: calc(100% - 2px);
   height: calc(100% - 2px);
-  background: var(--ios-label);
+  background: #302D2D;
   border-radius: 1px;
 }
 
@@ -317,6 +319,17 @@ body {
   100% { transform: rotate(1deg) translate(10px, 10px); }
 }
 
+@keyframes signalPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scaleY(0.8);
+  }
+}
+
 /* iOS Home Screen */
 .ios-home-screen {
   flex: 1;
@@ -325,22 +338,6 @@ body {
   justify-content: space-between;
   padding: 10px 24px 24px;
   position: relative;
-  backdrop-filter: blur(0.5px);
-}
-
-/* Add subtle overlay for depth */
-.ios-home-screen::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 1;
 }
 
 /* App Icons Grid - 2x3 Widget Style Layout */
@@ -352,9 +349,10 @@ body {
   justify-items: center;
   align-items: center;
   flex: 1;
-  max-height: 380px;
+  min-height: 380px;
+  height: 380px;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   padding: 8px;
   position: relative;
   z-index: 2;
@@ -455,7 +453,7 @@ body {
   width: 90%;
   margin-bottom: 10px;
   justify-content: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .app-icon-dock {
