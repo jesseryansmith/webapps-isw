@@ -85,7 +85,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Shortcut Card */
+/* Shortcut Card - Clean and optimized */
 .shortcut-card {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
@@ -99,6 +99,7 @@ body {
     position: relative;
     perspective: 1000px;
     box-shadow: var(--glass-shadow);
+    transform-style: preserve-3d;
 }
 
 .shortcut-card:hover {
@@ -110,7 +111,7 @@ body {
     transform: translateY(-2px) scale(0.98);
 }
 
-/* Card Content */
+/* Clean and smooth flip animation */
 .shortcut-card-front,
 .shortcut-card-back {
     position: absolute;
@@ -122,17 +123,18 @@ body {
     border-radius: var(--widget-radius);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    transition: transform 0.6s;
+    transition: transform 0.4s ease-in-out;
     display: flex;
     flex-direction: column;
 }
 
 .shortcut-card-front {
     justify-content: space-between;
+    transform: rotateY(0deg);
 }
 
 .shortcut-card-back {
-    transform: rotateY(180deg);
+    transform: rotateY(-180deg);
     justify-content: flex-start;
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
@@ -309,7 +311,7 @@ body {
     border-radius: var(--widget-radius);
     max-width: 90vw;
     width: 400px;
-    max-height: 80vh;
+    max-height: 90vh;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     transform: scale(0.8) translateY(20px);

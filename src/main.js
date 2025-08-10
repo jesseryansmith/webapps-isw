@@ -963,7 +963,7 @@ const shortcutManager = {
 
   // AI generation system (Phase 2)
   aiGeneration: {
-    enabled: true, // ✅ Phase 2 activated!
+    enabled: true, // Phase 2 activated!
     categories: ['productivity', 'health', 'entertainment', 'travel', 'photography', 'finance', 'smart-home', 'social', 'security', 'wellness'],
     difficulty: 'beginner', // beginner, intermediate, advanced
 
@@ -1492,7 +1492,7 @@ const shortcutManager = {
       const selectedCategory = category || this.categories[Math.floor(Math.random() * this.categories.length)];
       const categoryTemplates = this.templates[selectedCategory] || this.templates.productivity;
 
-      console.log(`🤖 Generating AI set for ${selectedCategory} (${difficulty}) with ${categoryTemplates.length} templates available`);
+      console.log(`Generating AI set for ${selectedCategory} (${difficulty}) with ${categoryTemplates.length} templates available`);
 
       // Create variations of templates - ensure we get different shortcuts
       const generatedShortcuts = [];
@@ -1532,7 +1532,7 @@ const shortcutManager = {
         }
       }
 
-      console.log(`✅ Generated ${generatedShortcuts.length} unique AI shortcuts`);
+      console.log(`Generated ${generatedShortcuts.length} unique AI shortcuts`);
       return generatedShortcuts;
     },
 
@@ -1615,7 +1615,7 @@ const shortcutManager = {
     const staticCount = Math.floor(Math.random() * 4) + 2; // 2-5 static shortcuts
     const aiCount = 6 - staticCount; // Remaining slots for AI shortcuts
 
-    console.log(`🎲 Generating mixed set: ${staticCount} static + ${aiCount} AI shortcuts`);
+    console.log(`Generating mixed set: ${staticCount} static + ${aiCount} AI shortcuts`);
 
     // Get random static shortcuts
     const shuffledStatic = [...allStaticShortcuts].sort(() => Math.random() - 0.5);
@@ -1646,13 +1646,13 @@ const shortcutManager = {
 
   // Get current set info for notifications with mixed content indicators
   getCurrentSetInfo() {
-    return `Mixed Collection 🎲`;
+    return `Mixed collection`;
   },
 
   // Enhanced features for Phase 2
   setDifficulty(level) {
     this.aiGeneration.difficulty = level;
-    console.log(`🎯 AI difficulty set to: ${level}`);
+    console.log(`AI difficulty set to: ${level}`);
   },
 
   // Get category-specific set
@@ -1695,14 +1695,15 @@ class FilterPreferences {
     return {
       categories: ['productivity', 'health', 'entertainment', 'travel', 'photography', 'finance', 'smart-home', 'social', 'security', 'wellness'], // Array of selected categories
       contentType: 'mixed', // 'static', 'ai', or 'mixed'
-      difficulty: 'beginner' // 'beginner', 'intermediate', 'advanced', or 'all'
+      difficulty: 'all', // 'beginner', 'intermediate', 'advanced', or 'all'
+      aiRatio: 0.5 // Ratio of AI shortcuts in mixed content (0.5 = 50%)
     };
   }
 
   savePreferences(newPreferences) {
     this.preferences = { ...this.preferences, ...newPreferences };
     localStorage.setItem('shortcutFilterPreferences', JSON.stringify(this.preferences));
-    console.log('💾 Filter preferences saved:', this.preferences);
+    console.log('Filter preferences saved:', this.preferences);
   }
 
   getPreferences() {
@@ -1712,7 +1713,7 @@ class FilterPreferences {
   // Apply filters to generate a customized shortcut set
   generateFilteredSet() {
     const prefs = this.preferences;
-    console.log('🎯 Generating filtered set with preferences:', prefs);
+    console.log('Generating filtered set with preferences:', prefs);
 
     let staticShortcuts = [];
     let aiShortcuts = [];
@@ -1762,9 +1763,17 @@ class FilterPreferences {
       // Only AI shortcuts
       finalSet = aiShortcuts.slice(0, targetCount);
     } else {
-      // Mixed content based on aiRatio
-      const aiCount = Math.round(targetCount * prefs.aiRatio);
+      // Mixed content - default to 50/50 split if aiRatio not specified
+      const aiRatio = prefs.aiRatio || 0.5; // Default to 50% AI
+      const aiCount = Math.round(targetCount * aiRatio);
       const staticCount = targetCount - aiCount;
+
+      console.log('Mixed content calculation:', {
+        aiRatio: aiRatio,
+        aiCount: aiCount,
+        staticCount: staticCount,
+        targetCount: targetCount
+      });
 
       const selectedStatic = [...staticShortcuts].sort(() => Math.random() - 0.5).slice(0, staticCount);
       const selectedAI = aiShortcuts.slice(0, aiCount);
@@ -1788,7 +1797,7 @@ class FilterPreferences {
 
     finalSet = finalSet.slice(0, targetCount);
 
-    console.log(`🎲 Generated filtered set: ${finalSet.length} shortcuts (${finalSet.filter(s => s.isAIGenerated).length} AI, ${finalSet.filter(s => !s.isAIGenerated).length} static)`);
+    console.log(`Generated filtered set: ${finalSet.length} shortcuts (${finalSet.filter(s => s.isAIGenerated).length} AI, ${finalSet.filter(s => !s.isAIGenerated).length} static)`);
     return finalSet;
   }
 }
@@ -1832,35 +1841,29 @@ function createFlipCardWidget(shortcut, container) {
     </div>
   `;
 
-  // Flip functionality with global state management
+  // Clean flip functionality with simplified state management
   function toggleFlip() {
-    // If another card is currently flipped, flip it back first
+    // Close any other flipped card immediately
     if (currentlyFlippedCard && currentlyFlippedCard !== widget) {
-      // Add a subtle scale animation to indicate the change
-      currentlyFlippedCard.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        currentlyFlippedCard.classList.remove('flipped');
-        currentlyFlippedCard.setAttribute('aria-pressed', 'false');
-        const otherBackSide = currentlyFlippedCard.querySelector('.shortcut-card-back');
-        otherBackSide.setAttribute('aria-hidden', 'true');
-        currentlyFlippedCard.style.transform = ''; // Reset transform
-      }, 100);
+      currentlyFlippedCard.classList.remove('flipped');
+      currentlyFlippedCard.setAttribute('aria-pressed', 'false');
+      const otherBackSide = currentlyFlippedCard.querySelector('.shortcut-card-back');
+      otherBackSide.setAttribute('aria-hidden', 'true');
     }
 
-    // Toggle current card with slight delay if another was open
-    const delay = (currentlyFlippedCard && currentlyFlippedCard !== widget) ? 150 : 0;
+    // Toggle current card state
+    isFlipped = !isFlipped;
+    widget.classList.toggle('flipped', isFlipped);
+    widget.setAttribute('aria-pressed', isFlipped.toString());
 
-    setTimeout(() => {
-      isFlipped = !isFlipped;
-      widget.classList.toggle('flipped', isFlipped);
-      widget.setAttribute('aria-pressed', isFlipped.toString());
+    const backSide = widget.querySelector('.shortcut-card-back');
+    backSide.setAttribute('aria-hidden', (!isFlipped).toString());
 
-      const backSide = widget.querySelector('.shortcut-card-back');
-      backSide.setAttribute('aria-hidden', (!isFlipped).toString());
+    // Update global state
+    currentlyFlippedCard = isFlipped ? widget : null;
 
-      // Update global state
-      currentlyFlippedCard = isFlipped ? widget : null;
-    }, delay);
+    // Update share button title based on new state
+    updateShareButtonTitle();
   }
 
   // Event listeners
@@ -1923,17 +1926,17 @@ function animateSignalBars() {
  * Shuffle cards with smooth animation - Enhanced with AI/Static hybrid
  */
 function shuffleCards() {
-  console.log('🔄 Shuffle function called');
+  console.log('Shuffle function called');
 
   if (isShuffling) {
-    console.log('⏸️ Already shuffling, skipping');
+    console.log('Already shuffling, skipping');
     return; // Prevent multiple shuffles
   }
 
   isShuffling = true;
   const appIconsGrid = document.querySelector('.app-icons-grid');
   if (!appIconsGrid) {
-    console.error('❌ App icons grid not found');
+    console.error('App icons grid not found');
     isShuffling = false;
     return;
   }
@@ -1942,25 +1945,40 @@ function shuffleCards() {
   if (currentlyFlippedCard) {
     currentlyFlippedCard.classList.remove('flipped');
     currentlyFlippedCard = null;
+
+    // Update share button title when card is unflipped during shuffle
+    updateShareButtonTitle();
   }
 
-  // Get next set of shortcuts from our hybrid manager
-  const newShortcuts = shortcutManager.getNextSet();
+  // Get next set of shortcuts respecting current filter preferences
+  const newShortcuts = filterPreferences.generateFilteredSet();
 
-  // Show iOS notification with AI styling
+  console.log('Shuffle using filtered preferences:', filterPreferences.preferences);
+
+  // Show iOS notification based on current content type
+  const currentPrefs = filterPreferences.preferences;
   const isAIGenerated = newShortcuts.some(s => s.isAIGenerated);
-  if (isAIGenerated) {
-    showIOSNotification('💡 AI shortcuts generated!', 'ai-generated');
-  } else {
-    showIOSNotification('Loading new shortcuts...');
-  }
-  const setInfo = shortcutManager.getCurrentSetInfo();
 
-  console.log(`🔀 Loading ${setInfo} with ${newShortcuts.length} cards`);
+  if (currentPrefs.contentType === 'ai') {
+    showIOSNotification('AI shortcuts shuffled!', 'ai-generated');
+  } else if (currentPrefs.contentType === 'static') {
+    showIOSNotification('Static shortcuts shuffled!', 'default');
+  } else if (isAIGenerated) {
+    showIOSNotification('Mixed content shuffled!', 'ai-generated');
+  } else {
+    showIOSNotification('Shortcuts shuffled!', 'default');
+  }
+  const contentTypeLabel = {
+    'static': 'Static Shortcuts',
+    'ai': 'AI Generated',
+    'mixed': 'Mixed Content'
+  }[currentPrefs.contentType] || 'Mixed Content';
+
+  console.log(`Shuffling ${contentTypeLabel} with ${newShortcuts.length} cards`);
 
   // Add shuffle animation to existing cards
   const existingCards = appIconsGrid.querySelectorAll('.shortcut-card');
-  console.log(`🃏 Found ${existingCards.length} existing cards to animate out`);
+  console.log(`Found ${existingCards.length} existing cards to animate out`);
 
   existingCards.forEach((card, index) => {
     setTimeout(() => {
@@ -1973,7 +1991,7 @@ function shuffleCards() {
   setTimeout(() => {
     // Clear existing cards
     appIconsGrid.innerHTML = '';
-    console.log('🧹 Cleared existing cards');
+    console.log('Cleared existing cards');
 
     // Create new cards with entrance animation
     newShortcuts.forEach((shortcut, index) => {
@@ -1997,10 +2015,10 @@ function shuffleCards() {
       // Removed the second notification as requested by user
       // const finalNotificationType = newShortcuts.some(s => s.isAIGenerated) ? 'ai-generated' : 'default';
       // const finalMessage = newShortcuts.some(s => s.isAIGenerated)
-      //   ? `💡 ${setInfo} loaded!`
-      //   : `${setInfo} loaded! 🎯`;
+      //   ? `${setInfo} loaded!`
+      //   : `${setInfo} loaded!`;
       // showIOSNotification(finalMessage, finalNotificationType);
-      console.log(`🏁 Shuffle complete - ${setInfo}`);
+      console.log(`Shuffle complete - ${setInfo}`);
     }, newShortcuts.length * 100 + 500);
 
   }, existingCards.length * 50 + 200);
@@ -2010,79 +2028,77 @@ function shuffleCards() {
  * Replace static app icons with interactive flip cards
  */
 function initializeFlipCards() {
-  console.log('🔄 Initializing flip cards...');
+  console.log('Initializing flip cards...');
   const appIconsGrid = document.querySelector('.app-icons-grid');
   if (!appIconsGrid) {
-    console.error('❌ App icons grid not found');
+    console.error('App icons grid not found');
     return;
   }
 
-  console.log('📱 Found app icons grid, clearing existing content...');
+  console.log('Found app icons grid, clearing existing content...');
   // Clear existing static icons
   appIconsGrid.innerHTML = '';
 
   // Get initial mixed set of shortcuts (including random mixing from the start)
   const initialShortcuts = shortcutManager.getNextSet();
-  console.log(`🎯 Generated ${initialShortcuts.length} initial shortcuts:`, initialShortcuts.map(s => s.name));
+  console.log(`Generated ${initialShortcuts.length} initial shortcuts:`, initialShortcuts.map(s => s.name));
 
   // Show initial load notification
   const hasAIContent = initialShortcuts.some(s => s.isAIGenerated);
   if (hasAIContent) {
     setTimeout(() => {
-      showIOSNotification('🎲 Mixed Collection loaded!', 'ai-generated');
+      showIOSNotification('Mixed collection loaded!', 'ai-generated');
     }, 500);
   }
 
   // Create flip cards for each shortcut in the mixed set
   initialShortcuts.forEach((shortcut, index) => {
-    console.log(`📄 Creating flip card ${index + 1}: ${shortcut.name}`);
+    console.log(`Creating flip card ${index + 1}: ${shortcut.name}`);
     createFlipCardWidget(shortcut, appIconsGrid);
   });
 
-  // Add click outside to close functionality
+  // Clean click-outside-to-close functionality
   document.addEventListener('click', (event) => {
     // Check if click is outside of any shortcut card
     if (!event.target.closest('.shortcut-card') && currentlyFlippedCard) {
-      // Add smooth closing animation
-      currentlyFlippedCard.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        currentlyFlippedCard.classList.remove('flipped');
-        currentlyFlippedCard.setAttribute('aria-pressed', 'false');
-        const backSide = currentlyFlippedCard.querySelector('.shortcut-card-back');
-        backSide.setAttribute('aria-hidden', 'true');
-        currentlyFlippedCard.style.transform = ''; // Reset transform
-        currentlyFlippedCard = null;
-      }, 100);
+      currentlyFlippedCard.classList.remove('flipped');
+      currentlyFlippedCard.setAttribute('aria-pressed', 'false');
+      const backSide = currentlyFlippedCard.querySelector('.shortcut-card-back');
+      backSide.setAttribute('aria-hidden', 'true');
+      currentlyFlippedCard = null;
+
+      // Update share button title when card is unflipped
+      updateShareButtonTitle();
     }
   });
 
-  console.log('✅ Flip cards initialized with', initialShortcuts.length, 'mixed shortcuts');
-  console.log('🎨 Material Design icons loaded:', initialShortcuts.map(s => s.icon).join(', '));
-  console.log('🌈 Color schemes used:', [...new Set(initialShortcuts.map(s => s.colorScheme))].join(', '));
-  console.log('🎲 Mixed content on load:', shortcutManager.getCurrentSetInfo());
+  console.log('Flip cards initialized with', initialShortcuts.length, 'mixed shortcuts');
+  console.log('Material Design icons loaded:', initialShortcuts.map(s => s.icon).join(', '));
+  console.log('Color schemes used:', [...new Set(initialShortcuts.map(s => s.colorScheme))].join(', '));
+  console.log('Mixed content on load:', shortcutManager.getCurrentSetInfo());
 }
 
 // Initialize animations
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 DOM Content Loaded - Starting initialization...');
+  console.log('DOM Content Loaded - Starting initialization...');
 
   // Add a small delay to ensure all CSS is loaded
   setTimeout(() => {
-    console.log('⚡ Starting battery animation...');
+    console.log('Starting battery animation...');
     animateBattery();
 
-    console.log('📶 Starting signal bars animation...');
+    console.log('Starting signal bars animation...');
     animateSignalBars();
 
-    console.log('🃏 Initializing interactive flip cards...');
+    console.log('Initializing interactive flip cards...');
     // Initialize interactive flip cards
     initializeFlipCards();
 
-    console.log('🎯 Adding dock button functionality...');
+    console.log('Adding dock button functionality...');
     // Add dock button functionality
     initializeDockButtons();
 
-    console.log('📱 Adding device hover effects...');
+    console.log('Adding device hover effects...');
     // Add subtle hover effects to the device
     const iphoneFrame = document.querySelector('.iphone-frame');
     if (iphoneFrame) {
@@ -2093,12 +2109,12 @@ document.addEventListener('DOMContentLoaded', () => {
       iphoneFrame.addEventListener('mouseleave', () => {
         iphoneFrame.style.transform = 'rotateX(2deg) rotateY(-2deg) scale(1)';
       });
-      console.log('✅ Device hover effects added');
+      console.log('Device hover effects added');
     } else {
-      console.warn('⚠️ iPhone frame not found');
+      console.warn('iPhone frame not found');
     }
 
-    console.log('🏝️ Adding dynamic island interaction...');
+    console.log('Adding dynamic island interaction...');
     // Dynamic Island interaction
     const dynamicIsland = document.querySelector('.dynamic-island');
     if (dynamicIsland) {
@@ -2108,16 +2124,16 @@ document.addEventListener('DOMContentLoaded', () => {
           dynamicIsland.style.animation = 'pulse 3s ease-in-out infinite';
         }, 100);
       });
-      console.log('✅ Dynamic island interaction added');
+      console.log('Dynamic island interaction added');
     } else {
-      console.warn('⚠️ Dynamic island not found');
+      console.warn('Dynamic island not found');
     }
 
-    console.log('📲 Initializing app interactions...');
+    console.log('Initializing app interactions...');
     // Initialize app interactions
     initializeAppInteractions();
 
-    console.log('🎉 All initialization complete!');
+    console.log('All initialization complete!');
   }, 100); // Small delay to ensure CSS is loaded
 });
 
@@ -2127,14 +2143,14 @@ function initializeDockButtons() {
   const dockIcons = document.querySelectorAll('.dock-icons .app-icon-dock');
 
   if (dockIcons.length > 0) {
-    console.log(`📍 Found ${dockIcons.length} dock icons`);
+    console.log(`Found ${dockIcons.length} dock icons`);
 
     // First dock button triggers shuffle
     dockIcons[0].addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
 
-      console.log('🔀 Shuffle button clicked!');
+      console.log('Shuffle button clicked!');
 
       // Add press animation
       dockIcons[0].classList.add('pressed');
@@ -2168,7 +2184,7 @@ function initializeDockButtons() {
         event.preventDefault();
         event.stopPropagation();
 
-        console.log('📚 Filter button clicked!');
+        console.log('Filter button clicked!');
 
         // Add press animation
         dockIcons[1].classList.add('pressed');
@@ -2196,16 +2212,234 @@ function initializeDockButtons() {
       dockIcons[1].setAttribute('title', 'Filter Shortcuts');
       dockIcons[1].style.position = 'relative';
 
-      console.log('📚 Dock filter button initialized successfully');
+      console.log('Dock filter button initialized successfully');
     }
 
-    console.log('🎯 Dock shuffle button initialized successfully');
+    // Third dock button (blue share) - Conditional Share functionality
+    if (dockIcons.length > 2) {
+      dockIcons[2].addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        console.log('Share button clicked!');
+
+        // Add press animation
+        dockIcons[2].classList.add('pressed');
+        setTimeout(() => {
+          dockIcons[2].classList.remove('pressed');
+        }, 150);
+
+        // Conditional logic based on whether a card is flipped
+        handleConditionalShare();
+      });
+
+      // Add hover effects for third dock button
+      dockIcons[2].addEventListener('mouseenter', () => {
+        dockIcons[2].style.transform = 'scale(1.1)';
+        dockIcons[2].style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+        dockIcons[2].style.cursor = 'pointer';
+      });
+
+      dockIcons[2].addEventListener('mouseleave', () => {
+        dockIcons[2].style.transform = 'scale(1)';
+        dockIcons[2].style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+      });
+
+      // Dynamic title based on current state
+      updateShareButtonTitle();
+      dockIcons[2].style.position = 'relative';
+
+      console.log('Dock share button initialized successfully');
+    }
+
+    // Fourth dock button (red generate) - Generate Custom Shortcut functionality
+    if (dockIcons.length > 3) {
+      dockIcons[3].addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        console.log('Generate button clicked!');
+
+        // Add press animation
+        dockIcons[3].classList.add('pressed');
+        setTimeout(() => {
+          dockIcons[3].classList.remove('pressed');
+        }, 150);
+
+        // Open generate modal
+        showGenerateModal();
+      });
+
+      // Add hover effects for fourth dock button
+      dockIcons[3].addEventListener('mouseenter', () => {
+        dockIcons[3].style.transform = 'scale(1.1)';
+        dockIcons[3].style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+        dockIcons[3].style.cursor = 'pointer';
+      });
+
+      dockIcons[3].addEventListener('mouseleave', () => {
+        dockIcons[3].style.transform = 'scale(1)';
+        dockIcons[3].style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+      });
+
+      // Add visual indicator that this is the generate button
+      dockIcons[3].setAttribute('title', 'Generate Custom Shortcut');
+      dockIcons[3].style.position = 'relative';
+
+      console.log('Dock generate button initialized successfully');
+    }
+
+    console.log('Dock shuffle button initialized successfully');
   } else {
-    console.warn('⚠️ No dock icons found. Retrying in 1 second...');
+    console.warn('No dock icons found. Retrying in 1 second...');
     // Retry after a short delay in case DOM isn't fully loaded
     setTimeout(initializeDockButtons, 1000);
   }
-}// App-specific interactions
+}
+
+// Conditional Share Function
+function handleConditionalShare() {
+  if (currentlyFlippedCard) {
+    // Condition 2: Card is flipped - Share specific shortcut
+    shareSpecificShortcut();
+  } else {
+    // Condition 1: No card flipped - Share webapp promotion
+    shareWebappPromotion();
+  }
+}
+
+// Share specific shortcut when card is flipped
+function shareSpecificShortcut() {
+  const flippedCard = currentlyFlippedCard;
+  const shortcutName = flippedCard.querySelector('.flip-card-front h3')?.textContent || 'Shortcut';
+  const shortcutDescription = flippedCard.querySelector('.flip-card-back .shortcut-description')?.textContent || 'iOS Shortcut';
+
+  const shortcutText = `${shortcutName}\n\n${shortcutDescription}\n\nFrom iOS Shortcuts Wizard - Create powerful iOS shortcuts instantly!\n\n🔗 https://techtonicliving.com/ios-shortcuts-wizard`;
+
+  // Check if Web Share API is supported (iOS Safari, Android Chrome, etc.)
+  if (navigator.share && navigator.canShare && navigator.canShare({
+    title: `${shortcutName} - iOS Shortcut`,
+    text: shortcutDescription,
+    url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+  })) {
+    // Use native share sheet (iOS Share Sheet)
+    navigator.share({
+      title: `${shortcutName} - iOS Shortcut`,
+      text: shortcutDescription,
+      url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+    }).then(() => {
+      showIOSNotification(`"${shortcutName}" shared successfully!`, 'default');
+    }).catch((error) => {
+      if (error.name !== 'AbortError') {
+        // Fallback to clipboard if share fails (but not if user cancelled)
+        copyToClipboardFallback(shortcutText, shortcutName);
+      }
+    });
+  } else if (navigator.share) {
+    // Basic Web Share API support without canShare
+    navigator.share({
+      title: `${shortcutName} - iOS Shortcut`,
+      text: shortcutDescription,
+      url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+    }).then(() => {
+      showIOSNotification(`"${shortcutName}" shared successfully!`, 'default');
+    }).catch((error) => {
+      if (error.name !== 'AbortError') {
+        copyToClipboardFallback(shortcutText, shortcutName);
+      }
+    });
+  } else {
+    // No Web Share API support - fallback to clipboard
+    copyToClipboardFallback(shortcutText, shortcutName);
+  }
+}
+
+// Share webapp promotion when no card is flipped
+function shareWebappPromotion() {
+  const promotionText = `🚀 iOS Shortcuts Wizard - Create powerful iOS shortcuts instantly!\n\n✨ Features:\n• AI-generated shortcuts\n• 60+ curated templates\n• Multiple categories\n• Interactive flip cards\n• Filter & customize\n\nTry it now: https://techtonicliving.com/ios-shortcuts-wizard`;
+
+  // Check if Web Share API is supported
+  if (navigator.share && navigator.canShare && navigator.canShare({
+    title: 'iOS Shortcuts Wizard',
+    text: '🚀 Create powerful iOS shortcuts instantly! AI-generated shortcuts, 60+ templates, multiple categories & more!',
+    url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+  })) {
+    // Use native share sheet (iOS Share Sheet)
+    navigator.share({
+      title: 'iOS Shortcuts Wizard',
+      text: '🚀 Create powerful iOS shortcuts instantly! AI-generated shortcuts, 60+ templates, multiple categories & more!',
+      url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+    }).then(() => {
+      showIOSNotification('Shared successfully!', 'default');
+    }).catch((error) => {
+      if (error.name !== 'AbortError') {
+        // Fallback to clipboard if share fails (but not if user cancelled)
+        copyToClipboardFallback(promotionText, 'Promo text');
+      }
+    });
+  } else if (navigator.share) {
+    // Basic Web Share API support without canShare
+    navigator.share({
+      title: 'iOS Shortcuts Wizard',
+      text: '🚀 Create powerful iOS shortcuts instantly! AI-generated shortcuts, 60+ templates, multiple categories & more!',
+      url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+    }).then(() => {
+      showIOSNotification('Shared successfully!', 'default');
+    }).catch((error) => {
+      if (error.name !== 'AbortError') {
+        copyToClipboardFallback(promotionText, 'Promo text');
+      }
+    });
+  } else {
+    // No Web Share API support - fallback to clipboard
+    copyToClipboardFallback(promotionText, 'Promo text');
+  }
+}
+
+// Unified clipboard fallback function
+function copyToClipboardFallback(text, itemName) {
+  // On desktop, show share modal instead of just copying
+  if (!navigator.share || !navigator.canShare) {
+    showShareModal(text, itemName);
+  } else {
+    // Mobile fallback - just copy to clipboard
+    navigator.clipboard.writeText(text).then(() => {
+      showIOSNotification(`${itemName} copied to clipboard!`, 'default');
+    }).catch(() => {
+      // Fallback for older browsers
+      fallbackCopyToClipboard(text);
+      showIOSNotification(`${itemName} copied to clipboard!`, 'default');
+    });
+  }
+}// Fallback clipboard function for older browsers
+function fallbackCopyToClipboard(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-999999px';
+  textArea.style.top = '-999999px';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textArea);
+}
+
+// Update share button title based on current state
+function updateShareButtonTitle() {
+  const dockIcons = document.querySelectorAll('.dock-icons .app-icon-dock');
+  if (dockIcons.length > 2) {
+    const shareButton = dockIcons[2];
+    if (currentlyFlippedCard) {
+      const shortcutName = currentlyFlippedCard.querySelector('.flip-card-front h3')?.textContent || 'Shortcut';
+      shareButton.setAttribute('title', `Share "${shortcutName}"`);
+    } else {
+      shareButton.setAttribute('title', 'Share iOS Shortcuts Wizard');
+    }
+  }
+}
+
+// App-specific interactions
 function initializeAppInteractions() {
   // App icon interactions
   const appIcons = document.querySelectorAll('.app-icon');
@@ -2262,43 +2496,43 @@ function executeShortcut(shortcutName) {
   const shortcuts = {
     camera: () => {
       // Integrate with your website's camera functionality
-      console.log('📷 Camera shortcut activated');
+      console.log('Camera shortcut activated');
     },
     music: () => {
       // Integrate with your website's music player
-      console.log('🎵 Music shortcut activated');
+      console.log('Music shortcut activated');
     },
     notes: () => {
       // Integrate with your website's note-taking feature
-      console.log('📝 Notes shortcut activated');
+      console.log('Notes shortcut activated');
     },
     maps: () => {
       // Integrate with your website's location features
-      console.log('🗺️ Maps shortcut activated');
+      console.log('Maps shortcut activated');
     },
     weather: () => {
       // Integrate with your website's weather widget
-      console.log('☀️ Weather shortcut activated');
+      console.log('Weather shortcut activated');
     },
     timer: () => {
       // Integrate with your website's timer functionality
-      console.log('⏰ Timer shortcut activated');
+      console.log('Timer shortcut activated');
     },
     shortcuts: () => {
       // Show shortcuts management interface
-      console.log('⚡ Shortcuts app activated');
+      console.log('Shortcuts app activated');
     },
     automation: () => {
       // Show automation features
-      console.log('🔧 Automation activated');
+      console.log('Automation activated');
     },
     control: () => {
       // Show control center
-      console.log('🎛️ Control center activated');
+      console.log('Control center activated');
     },
     media: () => {
       // Show media controls
-      console.log('🎬 Media controls activated');
+      console.log('Media controls activated');
     }
   };
 
@@ -2334,13 +2568,19 @@ function exitEditMode() {
  * Filter Modal Functions
  */
 function openFilterModal() {
-  console.log('📚 Opening filter modal');
+  console.log('Opening filter modal');
 
   // Create modal if it doesn't exist
   let modal = document.getElementById('filter-modal');
   if (!modal) {
     modal = createFilterModal();
-    document.body.appendChild(modal);
+    // Append to screen-content instead of body to keep within iPhone frame
+    const screenContent = document.querySelector('.screen-content');
+    if (screenContent) {
+      screenContent.appendChild(modal);
+    } else {
+      document.body.appendChild(modal);
+    }
   }
 
   // Load current preferences
@@ -2420,11 +2660,11 @@ function createFilterModal() {
         </div>
 
         <div class="filter-form-group">
-          <label>AI-Generated Suggestions:</label>
           <div class="filter-toggle-container">
+            <label class="filter-toggle-main-label">AI-Generated Suggestions:</label>
             <input type="checkbox" id="ai-suggestions-toggle" class="filter-toggle">
-            <label for="ai-suggestions-toggle" class="filter-toggle-label">
-              <span class="filter-toggle-text">Show</span>
+            <label for="ai-suggestions-toggle" class="filter-toggle-icon-label">
+              <span class="material-icons filter-toggle-icon">visibility</span>
             </label>
           </div>
         </div>
@@ -2456,10 +2696,10 @@ function createFilterModal() {
 
   // Add toggle event listener
   const aiToggle = modal.querySelector('#ai-suggestions-toggle');
-  const toggleText = modal.querySelector('.filter-toggle-text');
-  if (aiToggle && toggleText) {
+  const toggleIcon = modal.querySelector('.filter-toggle-icon');
+  if (aiToggle && toggleIcon) {
     aiToggle.addEventListener('change', () => {
-      toggleText.textContent = aiToggle.checked ? 'Show' : 'Hide';
+      toggleIcon.textContent = aiToggle.checked ? 'visibility' : 'visibility_off';
     });
   }
 
@@ -2468,24 +2708,24 @@ function createFilterModal() {
 
 function updateFilterModalValues(modal, prefs) {
   // This function is deprecated - using updateSimplifiedModalValues instead
-  console.log('⚠️ updateFilterModalValues is deprecated, please use updateSimplifiedModalValues');
+  console.log('updateFilterModalValues is deprecated, please use updateSimplifiedModalValues');
   updateSimplifiedModalValues(modal, prefs);
 }
 
 function applyFilters() {
   // This function is deprecated - using applySimplifiedFilters instead
-  console.log('⚠️ applyFilters is deprecated, please use applySimplifiedFilters');
+  console.log('applyFilters is deprecated, please use applySimplifiedFilters');
   applySimplifiedFilters();
 }
 
 function resetFilters() {
   // This function is deprecated - using resetSimplifiedFilters instead
-  console.log('⚠️ resetFilters is deprecated, please use resetSimplifiedFilters');
+  console.log('resetFilters is deprecated, please use resetSimplifiedFilters');
   resetSimplifiedFilters();
 }
 
 function applyFiltersToCurrentSet() {
-  console.log('🎯 Applying filters to current shortcut set');
+  console.log('Applying filters to current shortcut set');
 
   const appIconsGrid = document.querySelector('.app-icons-grid');
   if (!appIconsGrid) return;
@@ -2549,7 +2789,7 @@ document.head.appendChild(wiggleStyleSheet);
 const filterModalCSS = `
 /* Filter Modal Overlay */
 .filter-modal-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -2564,6 +2804,8 @@ const filterModalCSS = `
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
+  border-radius: 26px;
+  overflow: hidden;
 }
 
 .filter-modal-overlay.active {
@@ -2578,13 +2820,14 @@ const filterModalCSS = `
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
-  max-width: 90vw;
-  width: 400px;
-  max-height: 80vh;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80%;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   transform: scale(0.8) translateY(20px);
   transition: all 0.3s ease;
+  margin: auto;
 }
 
 .filter-modal-overlay.active .filter-modal-content {
@@ -2602,7 +2845,7 @@ const filterModalCSS = `
 
 .filter-modal-header h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: white;
 }
@@ -2610,7 +2853,7 @@ const filterModalCSS = `
 .filter-modal-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
   color: white;
   opacity: 0.7;
@@ -2626,22 +2869,22 @@ const filterModalCSS = `
 
 /* Filter Modal Body */
 .filter-modal-body {
-  padding: 20px 24px 24px;
+  padding: 16px 20px 20px;
   color: white;
-  max-height: 60vh;
+  max-height: 80vh;
   overflow-y: auto;
 }
 
 /* Filter Form Groups */
 .filter-form-group {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .filter-form-group label {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -2649,12 +2892,12 @@ const filterModalCSS = `
 .filter-select,
 .filter-range {
   width: 100%;
-  padding: 12px 16px;
+  padding: 10px 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.1);
   color: white;
-  font-size: 1rem;
+  font-size: 0.85rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -2705,7 +2948,7 @@ const filterModalCSS = `
 /* Checkbox Groups */
 .filter-checkbox-group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 8px;
 }
@@ -2744,54 +2987,46 @@ const filterModalCSS = `
 .filter-toggle-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 16px;
   margin-top: 8px;
+  min-height: 32px;
+}
+
+.filter-toggle-main-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .filter-toggle {
   display: none;
 }
 
-.filter-toggle-label {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 30px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
+.filter-toggle-icon-label {
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  flex-shrink: 0;
+}
+
+.filter-toggle-icon {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.6);
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  user-select: none;
 }
 
-.filter-toggle-label::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 24px;
-  height: 24px;
-  background: white;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.filter-toggle-icon:hover {
+  color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
 }
 
-.filter-toggle:checked + .filter-toggle-label {
-  background: #007AFF;
-  border-color: #007AFF;
-}
-
-.filter-toggle:checked + .filter-toggle-label::before {
-  transform: translateX(30px);
-}
-
-.filter-toggle-text {
-  margin-left: 8px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  min-width: 40px;
+.filter-toggle:checked + .filter-toggle-icon-label .filter-toggle-icon {
+  color: #007AFF;
 }
 
 /* Filter Buttons */
@@ -2806,10 +3041,10 @@ const filterModalCSS = `
 .filter-button-primary,
 .filter-button-secondary {
   flex: 1;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2874,7 +3109,7 @@ const filterModalCSS = `
 const filterModalStyleSheet = document.createElement('style');
 filterModalStyleSheet.textContent = filterModalCSS;
 document.head.appendChild(filterModalStyleSheet);
-console.log('🎨 Filter modal CSS injected successfully');
+console.log('Filter modal CSS injected successfully');
 
 // iOS-style notification system with AI support
 function showIOSNotification(message, type = 'default') {
@@ -2979,6 +3214,11 @@ function applySimplifiedFilters() {
   const aiToggle = modal.querySelector('#ai-suggestions-toggle');
   const aiEnabled = aiToggle ? aiToggle.checked : true;
 
+  console.log('AI Toggle Debug:', {
+    aiToggleChecked: aiToggle ? aiToggle.checked : 'not found',
+    aiEnabled: aiEnabled
+  });
+
   // Convert toggle state to content type
   let contentType = 'mixed'; // Default
   if (aiEnabled) {
@@ -2986,6 +3226,12 @@ function applySimplifiedFilters() {
   } else {
     contentType = 'static'; // Show only static shortcuts
   }
+
+  console.log('Filter Applied:', {
+    contentType: contentType,
+    aiEnabled: aiEnabled,
+    categories: selectedCategories
+  });
 
   const difficulty = modal.querySelector('#filter-difficulty').value;
 
@@ -3017,23 +3263,24 @@ function resetSimplifiedFilters() {
   if (aiToggle) {
     aiToggle.checked = true;
 
-    // Update toggle text
-    const toggleText = modal.querySelector('.filter-toggle-text');
-    if (toggleText) {
-      toggleText.textContent = 'Show';
+    // Update toggle icon
+    const toggleIcon = modal.querySelector('.filter-toggle-icon');
+    if (toggleIcon) {
+      toggleIcon.textContent = 'visibility';
     }
   }
 
   // Reset difficulty level
   const difficultySelect = modal.querySelector('#filter-difficulty');
   if (difficultySelect) {
-    difficultySelect.value = 'beginner';
+    difficultySelect.value = 'all';
   }
 
   const defaultPrefs = {
     categories: ['productivity', 'health', 'entertainment', 'travel', 'photography', 'finance', 'smart-home', 'social', 'security', 'wellness'],
     contentType: 'mixed',
-    difficulty: 'beginner'
+    difficulty: 'all',
+    aiRatio: 0.5 // 50% AI, 50% static for mixed content
   };
 
   filterPreferences.savePreferences(defaultPrefs);
@@ -3052,10 +3299,10 @@ function updateSimplifiedModalValues(modal, prefs) {
   if (aiToggle) {
     aiToggle.checked = (prefs.contentType === 'ai' || prefs.contentType === 'mixed');
 
-    // Update toggle text based on state
-    const toggleText = modal.querySelector('.filter-toggle-text');
-    if (toggleText) {
-      toggleText.textContent = aiToggle.checked ? 'Show' : 'Hide';
+    // Update toggle icon based on state
+    const toggleIcon = modal.querySelector('.filter-toggle-icon');
+    if (toggleIcon) {
+      toggleIcon.textContent = aiToggle.checked ? 'visibility' : 'visibility_off';
     }
   }
 
@@ -3071,4 +3318,490 @@ window.closeFilterModal = closeFilterModal;
 window.applySimplifiedFilters = applySimplifiedFilters;
 window.resetSimplifiedFilters = resetSimplifiedFilters;
 
-console.log('🍎 Pixel-perfect iPhone UI loaded successfully!');
+// Share Modal Variables
+let currentShareData = null;
+
+// Show share modal for desktop
+function showShareModal(content, title) {
+  currentShareData = {
+    title: title,
+    content: content,
+    url: 'https://techtonicliving.com/ios-shortcuts-wizard'
+  };
+
+  const modal = document.getElementById('shareModal');
+  modal.classList.add('show');
+
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+}
+
+// Close share modal
+function closeShareModal() {
+  const modal = document.getElementById('shareModal');
+  modal.classList.remove('show');
+
+  // Restore body scroll
+  document.body.style.overflow = '';
+
+  // Clear data
+  currentShareData = null;
+}
+
+// Share modal - Copy to clipboard
+function shareModalCopyToClipboard() {
+  if (!currentShareData) return;
+
+  navigator.clipboard.writeText(currentShareData.content).then(() => {
+    showIOSNotification('Copied to clipboard!', 'default');
+    closeShareModal();
+  }).catch(() => {
+    // Fallback for older browsers
+    fallbackCopyToClipboard(currentShareData.content);
+    showIOSNotification('Copied to clipboard!', 'default');
+    closeShareModal();
+  });
+}
+
+// Share modal - Email
+function shareModalEmail() {
+  if (!currentShareData) return;
+
+  const subject = encodeURIComponent(currentShareData.title);
+  const body = encodeURIComponent(currentShareData.content);
+
+  window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+  closeShareModal();
+}
+
+// Share modal - Twitter
+function shareModalTwitter() {
+  if (!currentShareData) return;
+
+  const text = encodeURIComponent(`${currentShareData.title}\n\n${currentShareData.content}`);
+  const url = encodeURIComponent(currentShareData.url);
+
+  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=600,height=400');
+  closeShareModal();
+}
+
+// Share modal - Facebook
+function shareModalFacebook() {
+  if (!currentShareData) return;
+
+  const url = encodeURIComponent(currentShareData.url);
+  const quote = encodeURIComponent(currentShareData.content);
+
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank', 'width=600,height=400');
+  closeShareModal();
+}
+
+// Share modal - LinkedIn
+function shareModalLinkedIn() {
+  if (!currentShareData) return;
+
+  const url = encodeURIComponent(currentShareData.url);
+  const title = encodeURIComponent(currentShareData.title);
+  const summary = encodeURIComponent(currentShareData.content);
+
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`, '_blank', 'width=600,height=400');
+  closeShareModal();
+}
+
+// Share modal - Reddit
+function shareModalReddit() {
+  if (!currentShareData) return;
+
+  const url = encodeURIComponent(currentShareData.url);
+  const title = encodeURIComponent(currentShareData.title);
+
+  window.open(`https://reddit.com/submit?url=${url}&title=${title}`, '_blank', 'width=600,height=400');
+  closeShareModal();
+}
+
+// Share modal - WhatsApp
+function shareModalWhatsApp() {
+  if (!currentShareData) return;
+
+  const text = encodeURIComponent(`${currentShareData.content}\n\n${currentShareData.url}`);
+
+  window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+  closeShareModal();
+}
+
+// Make share modal functions globally accessible
+window.closeShareModal = closeShareModal;
+window.shareModalCopyToClipboard = shareModalCopyToClipboard;
+window.shareModalEmail = shareModalEmail;
+window.shareModalTwitter = shareModalTwitter;
+window.shareModalFacebook = shareModalFacebook;
+window.shareModalLinkedIn = shareModalLinkedIn;
+window.shareModalReddit = shareModalReddit;
+window.shareModalWhatsApp = shareModalWhatsApp;
+
+// Close share modal when clicking outside
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('shareModal');
+  if (e.target === modal) {
+    closeShareModal();
+  }
+});
+
+// Close share modal with escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('shareModal');
+    if (modal.classList.contains('show')) {
+      closeShareModal();
+    }
+  }
+});
+
+// Generate Modal Functions
+function showGenerateModal() {
+  console.log('Opening generate modal');
+
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('generateModal');
+  if (!modal) {
+    modal = createGenerateModal();
+    // Append to screen-content instead of using existing HTML modal
+    const screenContent = document.querySelector('.screen-content');
+    if (screenContent) {
+      screenContent.appendChild(modal);
+    } else {
+      document.body.appendChild(modal);
+    }
+  }
+
+  // Show modal with active class like filter modal
+  modal.classList.add('active');
+
+  // Focus on textarea
+  setTimeout(() => {
+    const textarea = document.getElementById('shortcut-idea');
+    if (textarea) {
+      textarea.focus();
+    }
+  }, 300);
+
+  // Show notification
+  showIOSNotification('Generate custom shortcut', 'default');
+}
+
+function closeGenerateModal() {
+  const modal = document.getElementById('generateModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+
+  // Clear form
+  const textarea = document.getElementById('shortcut-idea');
+  const categorySelect = document.getElementById('generate-category');
+  const complexitySelect = document.getElementById('generate-complexity');
+
+  if (textarea) textarea.value = '';
+  if (categorySelect) categorySelect.value = 'auto';
+  if (complexitySelect) complexitySelect.value = 'beginner';
+}
+
+function createGenerateModal() {
+  const modal = document.createElement('div');
+  modal.id = 'generateModal';
+  modal.className = 'generate-modal-overlay';
+
+  modal.innerHTML = `
+    <div class="generate-modal">
+      <div class="generate-modal-header">
+        <h3 class="generate-modal-title">Generate Custom Shortcut</h3>
+        <button class="generate-modal-close" onclick="closeGenerateModal()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="generate-modal-content">
+        <div class="generate-input-section">
+          <label for="shortcut-idea" class="generate-label">Describe your shortcut idea:</label>
+          <textarea
+            id="shortcut-idea"
+            class="generate-textarea"
+            placeholder="Example: Create a shortcut that automatically texts my mom when I arrive home safely..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <div class="generate-options">
+          <div class="generate-option-group">
+            <label for="generate-category" class="generate-label">Category:</label>
+            <select id="generate-category" class="generate-select">
+              <option value="auto">Auto-detect</option>
+              <option value="productivity">Productivity</option>
+              <option value="communication">Communication</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="health">Health & Fitness</option>
+              <option value="travel">Travel</option>
+              <option value="automation">Automation</option>
+              <option value="social">Social</option>
+              <option value="utility">Utility</option>
+            </select>
+          </div>
+
+          <div class="generate-option-group">
+            <label for="generate-complexity" class="generate-label">Complexity:</label>
+            <select id="generate-complexity" class="generate-select">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="generate-actions">
+          <button class="generate-button secondary" onclick="closeGenerateModal()">
+            Cancel
+          </button>
+          <button class="generate-button primary" onclick="generateCustomShortcut()">
+            <span class="material-icons">auto_awesome</span>
+            Generate Shortcut
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  return modal;
+}
+
+function generateCustomShortcut() {
+  const ideaInput = document.getElementById('shortcut-idea');
+  const categorySelect = document.getElementById('generate-category');
+  const complexitySelect = document.getElementById('generate-complexity');
+
+  const idea = ideaInput.value.trim();
+  const category = categorySelect.value;
+  const complexity = complexitySelect.value;
+
+  if (!idea) {
+    showIOSNotification('Please describe your shortcut idea first!', 'error');
+    ideaInput.focus();
+    return;
+  }
+
+  // Close modal
+  closeGenerateModal();
+
+  // Show generating notification
+  showIOSNotification('🤖 AI is generating your custom shortcut...', 'default');
+
+  // Simulate AI generation process
+  setTimeout(() => {
+    const customShortcut = createCustomShortcut(idea, category, complexity);
+    displayGeneratedShortcut(customShortcut);
+    showIOSNotification('✨ Custom shortcut generated!', 'success');
+  }, 2000);
+}
+
+function createCustomShortcut(idea, category, complexity) {
+  // AI-inspired shortcut generation based on user input
+  const categoryMap = {
+    'productivity': ['Workflow', 'Task Management', 'Organization'],
+    'communication': ['Messaging', 'Email', 'Social'],
+    'entertainment': ['Media', 'Games', 'Fun'],
+    'health': ['Health Tracking', 'Fitness', 'Wellness'],
+    'travel': ['Navigation', 'Planning', 'Booking'],
+    'automation': ['Smart Home', 'IoT', 'Automation'],
+    'social': ['Social Media', 'Sharing', 'Community'],
+    'utility': ['Tools', 'Utilities', 'System']
+  };
+
+  const complexityDescriptions = {
+    'beginner': 'Simple and easy to set up',
+    'intermediate': 'Moderate complexity with multiple steps',
+    'advanced': 'Complex automation with conditional logic'
+  };
+
+  // Determine category if auto-detect
+  let finalCategory = category;
+  if (category === 'auto') {
+    // Simple keyword detection for auto-category
+    const keywords = {
+      'productivity': ['work', 'task', 'reminder', 'schedule', 'meeting', 'note'],
+      'communication': ['text', 'message', 'call', 'email', 'contact'],
+      'entertainment': ['music', 'video', 'game', 'photo', 'movie'],
+      'health': ['health', 'fitness', 'workout', 'steps', 'heart'],
+      'travel': ['location', 'home', 'work', 'navigate', 'map'],
+      'automation': ['automatic', 'smart', 'control', 'device', 'home'],
+      'social': ['social', 'share', 'post', 'friend', 'follow'],
+      'utility': ['battery', 'wifi', 'setting', 'system', 'tool']
+    };
+
+    const lowerIdea = idea.toLowerCase();
+    for (const [cat, words] of Object.entries(keywords)) {
+      if (words.some(word => lowerIdea.includes(word))) {
+        finalCategory = cat;
+        break;
+      }
+    }
+    if (finalCategory === 'auto') finalCategory = 'utility';
+  }
+
+  // Generate shortcut name based on idea
+  const shortcutName = generateShortcutName(idea);
+
+  // Generate steps based on complexity and idea
+  const steps = generateShortcutSteps(idea, complexity);
+
+  // Generate description
+  const description = `${complexityDescriptions[complexity]} custom shortcut: ${idea}`;
+
+  return {
+    id: `custom_${Date.now()}`,
+    title: shortcutName,
+    category: finalCategory,
+    difficulty: complexity,
+    description: description,
+    steps: steps,
+    isCustom: true,
+    userIdea: idea
+  };
+}
+
+function generateShortcutName(idea) {
+  // Extract key action words and create a concise name
+  const words = idea.split(' ').filter(word => word.length > 2);
+  const actionWords = ['send', 'create', 'set', 'get', 'check', 'turn', 'start', 'stop', 'open', 'close'];
+  const keyWords = words.filter(word =>
+    actionWords.includes(word.toLowerCase()) ||
+    word.length > 4
+  ).slice(0, 3);
+
+  if (keyWords.length === 0) {
+    return 'Custom Shortcut';
+  }
+
+  return keyWords.map(word =>
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  ).join(' ');
+}
+
+function generateShortcutSteps(idea, complexity) {
+  const stepCounts = {
+    'beginner': 3,
+    'intermediate': 5,
+    'advanced': 8
+  };
+
+  const baseSteps = [
+    'Open Shortcuts app',
+    'Tap the automation trigger',
+    'Configure the action parameters'
+  ];
+
+  const intermediateSteps = [
+    'Add conditional logic',
+    'Set up variable storage',
+    'Configure notification settings'
+  ];
+
+  const advancedSteps = [
+    'Create nested if-then conditions',
+    'Implement error handling',
+    'Add data validation',
+    'Set up advanced automation triggers',
+    'Configure complex text processing'
+  ];
+
+  let steps = [...baseSteps];
+
+  if (complexity === 'intermediate' || complexity === 'advanced') {
+    steps = steps.concat(intermediateSteps.slice(0, 2));
+  }
+
+  if (complexity === 'advanced') {
+    steps = steps.concat(advancedSteps.slice(0, 3));
+  }
+
+  return steps.slice(0, stepCounts[complexity]);
+}
+
+function displayGeneratedShortcut(shortcut) {
+  // Create the custom shortcut card
+  const cardHTML = `
+    <div class="flip-card custom-generated" data-category="${shortcut.category}" data-difficulty="${shortcut.difficulty}">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <div class="shortcut-category">${shortcut.category.toUpperCase()}</div>
+          <h3>${shortcut.title}</h3>
+          <div class="difficulty-badge ${shortcut.difficulty}">${shortcut.difficulty.toUpperCase()}</div>
+          <div class="custom-badge">✨ AI Generated</div>
+        </div>
+        <div class="flip-card-back">
+          <h3>${shortcut.title}</h3>
+          <div class="shortcut-description">${shortcut.description}</div>
+          <div class="shortcut-steps">
+            <h4>Steps:</h4>
+            <ol>
+              ${shortcut.steps.map(step => `<li>${step}</li>`).join('')}
+            </ol>
+          </div>
+          <div class="user-idea">
+            <strong>Your Idea:</strong> "${shortcut.userIdea}"
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Insert the card at the beginning of the grid
+  const grid = document.querySelector('.shortcut-grid');
+  if (grid) {
+    grid.insertAdjacentHTML('afterbegin', cardHTML);
+
+    // Animate the new card in
+    const newCard = grid.querySelector('.custom-generated');
+    if (newCard) {
+      newCard.style.opacity = '0';
+      newCard.style.transform = 'scale(0.8)';
+
+      setTimeout(() => {
+        newCard.style.transition = 'all 0.5s ease';
+        newCard.style.opacity = '1';
+        newCard.style.transform = 'scale(1)';
+      }, 100);
+
+      // Add flip functionality
+      newCard.addEventListener('click', () => {
+        flipCard(newCard);
+      });
+
+      // Scroll to the new card
+      setTimeout(() => {
+        newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 600);
+    }
+  }
+}
+
+// Make generate modal functions globally accessible
+window.showGenerateModal = showGenerateModal;
+window.closeGenerateModal = closeGenerateModal;
+window.generateCustomShortcut = generateCustomShortcut;
+
+// Close generate modal when clicking outside
+document.addEventListener('click', (e) => {
+  const generateModal = document.getElementById('generateModal');
+  if (e.target === generateModal) {
+    closeGenerateModal();
+  }
+});
+
+// Close generate modal with escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const generateModal = document.getElementById('generateModal');
+    if (generateModal && generateModal.classList.contains('show')) {
+      closeGenerateModal();
+    }
+  }
+});
+
+console.log('Pixel-perfect iPhone UI loaded successfully!');

@@ -96,6 +96,10 @@ body {
   border-radius: calc(var(--device-border-radius) - var(--screen-padding));
   overflow: hidden;
   position: relative;
+  transform-style: preserve-3d;
+  z-index: 1;
+  /* Ensure absolute children are contained */
+  contain: layout style paint;
 }
 
 /* Status Bar */
