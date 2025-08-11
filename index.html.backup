@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#007AFF" />
+
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <title>Custom iOS Shortcut Wizard</title>
+
+    <!-- Optimized font loading -->
+    <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <!-- Fallback for preload -->
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap">
+    </noscript>
+  </head>
+  <body>
+    <!-- iPhone Container -->
+    <div class="device-container">
+      <div class="iphone-frame">
+        <!-- Dynamic Island / Notch -->
+        <div class="dynamic-island"></div>
+
+        <!-- Screen Content -->
+        <div class="screen-content">
+          <div id="app">
+            <!-- Main App Content -->
+            <div class="app-container">
+              <!-- Status Bar -->
+              <div class="status-bar">
+                <div class="status-left">
+                  <span class="time">9:41</span>
+                </div>
+                <div class="status-right">
+                  <div class="signal-bars">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                  </div>
+                  <div class="wifi-icon"><span class="material-icons">wifi</span></div>
+                  <div class="battery">
+                    <div class="battery-level"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- iOS Home Screen Style -->
+              <div class="ios-home-screen">
+<div class="branding"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/logo-standard_BoX_1024x512.png"></div>
+                <!-- App Icons Grid (2x3 Widget Style Layout) -->
+                <div class="app-icons-grid">
+                  <!-- Row 1 -->
+                  <div class="app-icon blue" data-shortcut="camera">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">photo_camera</div></span></div>
+                  </div>
+                  <div class="app-icon pink" data-shortcut="music">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">music_note</div></span></div>
+                  </div>
+
+                  <!-- Row 2 -->
+                  <div class="app-icon yellow" data-shortcut="notes">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">edit_note</div></span></div>
+                  </div>
+                  <div class="app-icon green" data-shortcut="maps">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">map</div></span></div>
+                  </div>
+
+                  <!-- Row 3 -->
+                  <div class="app-icon orange" data-shortcut="weather">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">sunny</div></span></div>
+                  </div>
+                  <div class="app-icon purple" data-shortcut="timer">
+                    <div class="icon-symbol"><span class="material-icons"><div class="lg-widget">alarm</div></span></div>
+                  </div>
+                </div>
+
+                <!-- Search Field Container -->
+                <div class="search-container">
+                  <div data-layer="Search Field" class="SearchField">
+                    <div data-layer="Search" class="Search">
+                      <div class="Search-icon_container"><span class="material-icons">search</span></div>
+                      <div class="Search-text_container">Search</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Dock Area (bottom row like in Figma) -->
+                <div class="dock-area">
+                  <div class="dock-background">
+</div>
+                 <div class="dock-icons">
+                      <div class="app-icon-dock purple-dock" data-shortcut="transmit">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/Shuffle-icon_custom.png" alt="Shuffle" height="64px" width="64px"></a></div>
+                      </div>
+                      <div class="app-icon-dock orange-dock" data-shortcut="books">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/Filter-icon_custom.png" alt="Catalog" height="64px" width="64px"></a></div>
+                      </div>
+                      <div class="app-icon-dock blue-dock" data-shortcut="mail">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/Share-icon_custom.png" alt="Send" height="64px" width="64px"></a></div>
+                      </div>
+                      <div class="app-icon-dock red-dock" data-shortcut="music">
+                        <div class="icon-symbol"><a href="#"><img src="https://techtonicliving.com/wp-content/webapps/custom-iOS-shortcut-wizard/files/assets/media-files/Generate-icon_custom.png" alt="Music" height="64px" width="64px"></a></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+</div>
+
+              </div>
+            </div>
+          </div>
+
+        <!-- Share Modal for Desktop -->
+        <div id="shareModal" class="share-modal-overlay">
+          <div class="share-modal">
+            <div class="share-modal-header">
+              <h3 class="share-modal-title">Share</h3>
+              <button class="share-modal-close" onclick="closeShareModal()">
+                <span class="material-icons">close</span>
+              </button>
+            </div>
+            <div class="share-modal-content">
+              <div class="share-options">
+                <!-- Copy to Clipboard -->
+                <div class="share-option" onclick="shareModalCopyToClipboard()">
+                  <div class="share-option-icon">
+                    <span class="material-icons">content_copy</span>
+                  </div>
+                  <span class="share-option-label">Copy Link</span>
+                </div>
+
+                <!-- Email -->
+                <div class="share-option" onclick="shareModalEmail()">
+                  <div class="share-option-icon">
+                    <span class="material-icons">email</span>
+                  </div>
+                  <span class="share-option-label">Email</span>
+                </div>
+
+                <!-- Twitter -->
+                <div class="share-option" onclick="shareModalTwitter()">
+                  <div class="share-option-icon twitter-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  </div>
+                  <span class="share-option-label">Twitter</span>
+                </div>
+
+                <!-- Facebook -->
+                <div class="share-option" onclick="shareModalFacebook()">
+                  <div class="share-option-icon facebook-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                  </div>
+                  <span class="share-option-label">Facebook</span>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="share-option" onclick="shareModalLinkedIn()">
+                  <div class="share-option-icon linkedin-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </div>
+                  <span class="share-option-label">LinkedIn</span>
+                </div>
+
+                <!-- Reddit -->
+                <div class="share-option" onclick="shareModalReddit()">
+                  <div class="share-option-icon reddit-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path fill="currentColor" d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                    </svg>
+                  </div>
+                  <span class="share-option-label">Reddit</span>
+                </div>
+
+                <!-- WhatsApp -->
+                <div class="share-option" onclick="shareModalWhatsApp()">
+                  <div class="share-option-icon whatsapp-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.484 3.488"/>
+                    </svg>
+                  </div>
+                  <span class="share-option-label">WhatsApp</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate Modal for Custom Shortcut Ideas -->
+        <div id="generateModal" class="generate-modal-overlay">
+          <div class="generate-modal">
+            <div class="generate-modal-header">
+              <h3 class="generate-modal-title">Generate Custom Shortcut</h3>
+              <button class="generate-modal-close" onclick="closeGenerateModal()">
+                <span class="material-icons">close</span>
+              </button>
+            </div>
+            <div class="generate-modal-content">
+              <div class="generate-input-section">
+                <label for="shortcut-idea" class="generate-label">Describe your shortcut idea:</label>
+                <textarea
+                  id="shortcut-idea"
+                  class="generate-textarea"
+                  placeholder="Example: Create a shortcut that automatically texts my mom when I arrive home safely..."
+                  rows="4"
+                ></textarea>
+              </div>
+
+              <div class="generate-options">
+                <div class="generate-option-group">
+                  <label for="generate-category" class="generate-label">Category:</label>
+                  <select id="generate-category" class="generate-select">
+                    <option value="auto">Auto-detect</option>
+                    <option value="productivity">Productivity</option>
+                    <option value="communication">Communication</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="health">Health & Fitness</option>
+                    <option value="travel">Travel</option>
+                    <option value="automation">Automation</option>
+                    <option value="social">Social</option>
+                    <option value="utility">Utility</option>
+                  </select>
+                </div>
+
+                <div class="generate-option-group">
+                  <label for="generate-complexity" class="generate-label">Complexity:</label>
+                  <select id="generate-complexity" class="generate-select">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="generate-actions">
+                <button class="generate-button secondary" onclick="closeGenerateModal()">
+                  Cancel
+                </button>
+                <button class="generate-button primary" onclick="generateCustomShortcut()">
+                  <span class="material-icons">auto_awesome</span>
+                  Generate Shortcut
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Home Indicator -->
+        <div class="home-indicator"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then((registration) => {
+              console.log('✅ Service Worker registered:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('❌ Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

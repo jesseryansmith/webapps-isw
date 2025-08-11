@@ -1,0 +1,56 @@
+{
+  "name": "iOS Shortcut Wizard",
+  "short_name": "Shortcut Wizard",
+  "description": "Interactive web app for discovering and learning iOS shortcuts",
+  "theme_color": "#007AFF",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "education"],
+  "shortcuts": [
+    {
+      "name": "Filter Shortcuts",
+      "short_name": "Filter",
+      "description": "Open the filter modal to customize shortcuts",
+      "url": "/?action=filter",
+      "icons": [{ "src": "images/icon-filter.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Generate Shortcut",
+      "short_name": "Generate",
+      "description": "Create a custom AI-generated shortcut",
+      "url": "/?action=generate",
+      "icons": [{ "src": "images/icon-generate.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "images/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
